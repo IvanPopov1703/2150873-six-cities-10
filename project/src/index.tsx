@@ -6,8 +6,10 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 
+const foundNumOfAccommodationOptions = 5;
+
 root.render(
   <React.StrictMode>
-    <App />
+    <App foundNumOfAccommodationOptions={foundNumOfAccommodationOptions}/>
   </React.StrictMode>,
 );
