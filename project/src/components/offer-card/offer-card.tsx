@@ -1,9 +1,25 @@
-import {OfferCardObject} from '../../types/offer-card-object';
+import {AppRoute} from '../../const';
+import {generatePath, Link} from 'react-router-dom';
 
-function OfferCard(props: OfferCardObject): JSX.Element {
+type OfferCardProps = {
+  id: number,
+  previewImage: string,
+  isFavorite: boolean,
+  isPremium: boolean,
+  title: string,
+  type: string,
+  price: number,
+  rating: number,
+  onOfferCardMouseOver?: (id: number) => void,
+  onOfferCardLeave?: () => void,
+}
 
+function OfferCard(props: OfferCardProps): JSX.Element {
   return (
-    <article className="cities__card place-card">
+    <article className="cities__card place-card"
+      onMouseOver={() => props.onOfferCardMouseOver?.(props.id)}
+      onMouseLeave={() => props.onOfferCardLeave?.()}
+    >
       {
         props.isPremium
           ?
@@ -14,17 +30,17 @@ function OfferCard(props: OfferCardObject): JSX.Element {
       }
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="/">
-          <img className="place-card__image" src={props.imgPath} width="260" height="200" alt='Карточка с предложением'/>
+          <img className="place-card__image" src={props.previewImage} width="260" height="200" alt='Карточка с предложением'/>
         </a>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">{props.housingCost}</b>
+            <b className="place-card__price-value">{props.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className={props.isSelected
+            className={props.isFavorite
               ? 'place-card__bookmark-button button place-card__bookmark-button--active'
               : 'place-card__bookmark-button button'} type="button"
           >
@@ -36,14 +52,14 @@ function OfferCard(props: OfferCardObject): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}></span>
+            <span style={{width: `${props.rating * 20}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="/">{props.title}</a>
+          <Link to={generatePath(AppRoute.Offer, {id: `${props.id}`})}>{props.title}</Link>
         </h2>
-        <p className="place-card__type">{props.housingType}</p>
+        <p className="place-card__type">{props.type}</p>
       </div>
     </article>
   );
