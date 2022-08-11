@@ -2,6 +2,7 @@ import Header from '../../components/header/Header';
 import OfferList from '../../components/offer-list/offer-list';
 import {OffersType} from '../../types/offers';
 import {useState} from 'react';
+import Map from '../../components/map/map';
 
 type MainScreenProps = {
   offers: OffersType,
@@ -10,10 +11,10 @@ type MainScreenProps = {
 
 function MainScreen({offers, numberOfOffersFound}: MainScreenProps): JSX.Element {
 
-  const [,setActiveOfferCard] = useState<number | null>(null);
+  const [activeOfferCardId, setActiveOfferCardId] = useState<number | null>(null);
 
-  const handleOfferCardMouseOver = (id: number) => setActiveOfferCard(id);
-  const handleOfferCardLeave = () => setActiveOfferCard(null);
+  const handleOfferCardMouseOver = (id: number) => setActiveOfferCardId(id);
+  const handleOfferCardLeave = () => setActiveOfferCardId(null);
 
   return (
     <div>
@@ -104,7 +105,7 @@ function MainScreen({offers, numberOfOffersFound}: MainScreenProps): JSX.Element
                 </div>
               </section>
               <div className="cities__right-section">
-                <section className="cities__map map"></section>
+                <Map city={offers[0].city} pointsCity={offers} selectedOfferCardId={activeOfferCardId} />
               </div>
             </div>
           </div>
