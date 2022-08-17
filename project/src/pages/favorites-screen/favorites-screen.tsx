@@ -3,13 +3,11 @@ import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import {Fragment} from 'react';
 import FavoriteOffer from '../../components/favorite-offer/favorite-offer';
-import {OffersType} from '../../types/offers';
+import {useAppSelector} from '../../hooks';
 
-type FavoritesScreenProps = {
-  offers: OffersType
-}
+function FavoritesScreen(): JSX.Element {
 
-function FavoritesScreen({offers}: FavoritesScreenProps): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
 
   return (
     <Fragment>
