@@ -13,3 +13,4 @@ export enum AuthorizationStatus {
 }
 
 export const RATING_VALUES = [5, 4, 3, 2, 1];
+export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
