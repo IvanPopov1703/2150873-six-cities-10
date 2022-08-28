@@ -7,6 +7,7 @@ import TabsList from '../../components/tabs-list/tabs-list';
 import MainNotFoundOffers from '../../components/main-not-found-offers/main-not-found-offers';
 import SortOptionsForm from '../../components/sort-options-form/sort-options-form';
 import SortByOption from '../../utils/sort-by-option';
+import LoadingScreen from '../../components/loading-screen/loading-screen';
 
 function MainScreen(): JSX.Element {
 
@@ -15,11 +16,17 @@ function MainScreen(): JSX.Element {
   const handleOfferCardMouseOver = (id: number) => setActiveOfferCardId(id);
   const handleOfferCardLeave = () => setActiveOfferCardId(null);
 
-  const numberOfOffersFound = useAppSelector((state) => state.numberOfOffersFound);
   const activeCity = useAppSelector((state) => state.activeCity);
   const activeSortType = useAppSelector((state) => state.activeSortOption);
-  const filterOffers = useAppSelector((state) => state.offers);
+  const allOffers = useAppSelector((state) => state.offers);
+  const filterOffers = allOffers.filter((item) => item.city.name === activeCity);
   const offers = SortByOption([...filterOffers], activeSortType);
+  const numberOfOffersFound = filterOffers.length;
+  const offerLoadingStatus = useAppSelector((state) => state.isOfferLoading);
+
+  if (offerLoadingStatus) {
+    return (<LoadingScreen />);
+  }
 
   return (
     <div>
@@ -54,7 +61,7 @@ function MainScreen(): JSX.Element {
                 <div className="cities__places-container container">
                   <section className="cities__places places">
                     <h2 className="visually-hidden">Places</h2>
-                    <b className="places__found">{numberOfOffersFound} places to stay in Amsterdam</b>
+                    <b className="places__found">{numberOfOffersFound} places to stay in {activeCity}</b>
                     <SortOptionsForm />
                     <div className="cities__places-list places__list tabs__content">
                       <OfferList offers={offers}
