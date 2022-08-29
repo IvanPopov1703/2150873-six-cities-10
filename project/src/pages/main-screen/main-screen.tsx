@@ -5,6 +5,8 @@ import Map from '../../components/map/map';
 import {useAppSelector} from '../../hooks';
 import TabsList from '../../components/tabs-list/tabs-list';
 import MainNotFoundOffers from '../../components/main-not-found-offers/main-not-found-offers';
+import SortOptionsForm from '../../components/sort-options-form/sort-options-form';
+import SortByOption from '../../utils/sort-by-option';
 
 function MainScreen(): JSX.Element {
 
@@ -14,8 +16,10 @@ function MainScreen(): JSX.Element {
   const handleOfferCardLeave = () => setActiveOfferCardId(null);
 
   const numberOfOffersFound = useAppSelector((state) => state.numberOfOffersFound);
-  const offers = useAppSelector((state) => state.offers);
   const activeCity = useAppSelector((state) => state.activeCity);
+  const activeSortType = useAppSelector((state) => state.activeSortOption);
+  const filterOffers = useAppSelector((state) => state.offers);
+  const offers = SortByOption([...filterOffers], activeSortType);
 
   return (
     <div>
@@ -51,21 +55,7 @@ function MainScreen(): JSX.Element {
                   <section className="cities__places places">
                     <h2 className="visually-hidden">Places</h2>
                     <b className="places__found">{numberOfOffersFound} places to stay in Amsterdam</b>
-                    <form className="places__sorting" action="#" method="get">
-                      <span className="places__sorting-caption">Sort by</span>
-                      <span className="places__sorting-type" tabIndex={0}>
-                        Popular
-                        <svg className="places__sorting-arrow" width="7" height="4">
-                          <use xlinkHref="#icon-arrow-select"></use>
-                        </svg>
-                      </span>
-                      <ul className="places__options places__options--custom places__options">
-                        <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                        <li className="places__option" tabIndex={0}>Price: low to high</li>
-                        <li className="places__option" tabIndex={0}>Price: high to low</li>
-                        <li className="places__option" tabIndex={0}>Top rated first</li>
-                      </ul>
-                    </form>
+                    <SortOptionsForm />
                     <div className="cities__places-list places__list tabs__content">
                       <OfferList offers={offers}
                         onOfferCardMouseOver={handleOfferCardMouseOver}

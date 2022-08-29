@@ -1,6 +1,6 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {changeActiveCity} from './action';
-import {CITIES} from '../const';
+import {changeActiveCity, changeActiveSortType} from './action';
+import {CITIES, SortOption} from '../const';
 import {offers} from '../moks/offers';
 import {reviews} from '../moks/reviews';
 import {user} from '../moks/user';
@@ -11,7 +11,8 @@ const initialState = {
   reviews: reviews,
   user: user,
   activeCity: CITIES[0],
-  numberOfOffersFound: offers.filter((item) => item.city.name === CITIES[0]).length
+  numberOfOffersFound: offers.filter((item) => item.city.name === CITIES[0]).length,
+  activeSortOption: SortOption.Popular
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -20,5 +21,8 @@ export const reducer = createReducer(initialState, (builder) => {
       state.activeCity = action.payload;
       state.offers = initialState.allOffers.filter((item) => item.city.name === action.payload);
       state.numberOfOffersFound = state.offers.length;
+    })
+    .addCase(changeActiveSortType, (state, action) => {
+      state.activeSortOption = action.payload;
     });
 });
