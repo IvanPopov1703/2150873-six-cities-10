@@ -1,4 +1,4 @@
-export type AuthData = {
-  login: string;
+export type AuthDataType = {
+  email: string;
   password: string;
 };
