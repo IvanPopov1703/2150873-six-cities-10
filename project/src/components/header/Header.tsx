@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
 
 function Header(): JSX.Element {
-  const isAuth = true;
+  const isAuth = false;
   return (
     <div>
       <header className="header">
