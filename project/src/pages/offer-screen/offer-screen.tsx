@@ -7,6 +7,7 @@ import PropertyInsideItem from '../../components/property-inside-item/property-i
 import ReviewsItem from '../../components/reviews-item/reviews-item';
 import CommentSubmissionForm from '../../components/comment-submission-form/comment-submission-form';
 import OfferList from '../../components/offer-list/offer-list';
+import Map from '../../components/map/map';
 
 type OfferScreenProps = {
   offers: OffersType,
@@ -134,7 +135,7 @@ function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
                 </section>
               </div>
             </div>
-            <section className="property__map map"></section>
+            <Map city={currentOffer.city} pointsCity={offers} selectedOfferCardId={currentOfferId} />
           </section>
           <div className="container">
             <section className="near-places places">
