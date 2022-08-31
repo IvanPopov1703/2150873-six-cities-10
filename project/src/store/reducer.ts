@@ -1,10 +1,10 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {
   changeActiveCity,
-  changeActiveSortType, loadActiveOffer, loadFavorites, loadNeighbourhood,
+  changeActiveSortType, changeFavoriteStatus, loadActiveOffer, loadFavorites, loadNeighbourhood,
   loadOffers, loadReviews,
   requireAuthorization,
-  setDataLoadingStatus, setOfferLoadingStatus,
+  setDataLoadingStatus, setFavoriteLoadingStatus, setOfferLoadingStatus,
   setUser
 } from './action';
 import {AuthorizationStatus, CITIES, SortOption} from '../const';
@@ -24,6 +24,7 @@ type InitialStateType = {
   neighbourhood: OffersType,
   activeOffer: OfferType | null,
   isDataLoading: boolean,
+  isFavoriteLoading: boolean,
 }
 
 const initialState : InitialStateType = {
@@ -38,6 +39,7 @@ const initialState : InitialStateType = {
   neighbourhood: [],
   activeOffer: null,
   isDataLoading: false,
+  isFavoriteLoading: false,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -74,5 +76,22 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadActiveOffer, (state, action) => {
       state.activeOffer = action.payload;
+    })
+    .addCase(setFavoriteLoadingStatus, (state, action) => {
+      state.isFavoriteLoading = action.payload;
+    })
+    .addCase(changeFavoriteStatus, (state, action) => {
+      const statusChangedFavorite = action.payload.isFavorite;
+      const idChangedFavorite = action.payload.id;
+      state.offers.forEach((item) => {
+        if (item.id === idChangedFavorite) {
+          item.isFavorite = statusChangedFavorite;
+        }
+      });
+      if (statusChangedFavorite) {
+        state.favorites.push(action.payload);
+      } else {
+        state.favorites = state.favorites.filter((item) => item.id !== idChangedFavorite);
+      }
     });
 });
