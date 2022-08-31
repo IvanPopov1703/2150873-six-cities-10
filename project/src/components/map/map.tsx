@@ -1,6 +1,6 @@
 import {Icon, Marker} from 'leaflet';
 import {CityType, OffersType} from '../../types/offers';
-import {useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import useMap from '../../hooks/useMap';
 import 'leaflet/dist/leaflet.css';
 import {AppRoute} from '../../const';
@@ -66,4 +66,4 @@ function Map({city, pointsCity, selectedOfferCardId}: MapProps): JSX.Element {
   );
 }
 
-export default Map;
+export default React.memo(Map);

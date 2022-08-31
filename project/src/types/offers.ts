@@ -37,11 +37,9 @@ export type OfferType = {
 
 export type OffersType = OfferType[];
 
-export enum HousingType {
-  Apartment = 'Apartment',
-  Private_room = 'Private room',
-  House = 'House',
-  Hotel = 'Hotel'
+export type FavoriteDataType = {
+  id: number,
+  status: number,
 }
 
 

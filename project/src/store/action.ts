@@ -28,4 +28,8 @@ export const loadActiveOffer = createAction<OfferType>('loadActiveOffer');
 
 export const setOfferLoadingStatus = createAction<boolean>('setOfferLoadingStatus');
 
+export const setFavoriteLoadingStatus = createAction<boolean>('setFavoriteLoadingStatus');
+
 export const redirectToRoute = createAction<AppRoute>('redirectToRoute');
+
+export const changeFavoriteStatus = createAction<OfferType>('changeFavoriteStatus');
