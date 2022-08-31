@@ -1,22 +1,56 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
 import {RATING_VALUES} from '../../const';
 import FormRatingInput from '../form-rating-input/form-rating-input';
+import {ReviewDataType} from '../../types/reviews';
+import {useAppDispatch} from '../../hooks';
+import {postReviewAction} from '../../store/api-actions';
 
-function CommentSubmissionForm(): JSX.Element {
+type CommentSubmissionFormProps = {
+  offerId: number
+};
+
+const MIN_REVIEW_LENGTH = 50;
+const MAX_REVIEW_LENGTH = 300;
+
+function CommentSubmissionForm({offerId}: CommentSubmissionFormProps): JSX.Element {
 
   const [formData, setFormData] = useState({
     review: '',
-    rating: 0
+    rating: 0,
+    isValid: false,
   });
+
+  const dispatch = useAppDispatch();
 
   const handleTextareaAndInputChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const {name, value} = event.target;
-    setFormData({...formData, [name]: value});
+    const isValid = value.length >= MIN_REVIEW_LENGTH && value.length <= MAX_REVIEW_LENGTH;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+      isValid: isValid
+    });
   };
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    //будет выполняться обработка полей формы
+
+    onSubmit({
+      id: offerId,
+      rating: Number(formData.rating),
+      comment: formData.review,
+    });
+
+    setFormData({
+      review: '',
+      rating: 0,
+      isValid: false,
+    });
+  };
+
+  const onSubmit = (reviewData: ReviewDataType) => {
+    dispatch(postReviewAction(reviewData));
   };
 
   return (
@@ -39,7 +73,7 @@ function CommentSubmissionForm(): JSX.Element {
         </p>
         <button className="reviews__submit form__submit button"
           type="submit"
-          disabled
+          disabled={!formData.review || !formData.rating || !formData.isValid}
         >
           Submit
         </button>

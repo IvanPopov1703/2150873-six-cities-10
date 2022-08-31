@@ -15,14 +15,7 @@ function OfferList({offers, onOfferCardMouseOver, onOfferCardLeave}: OfferListPr
         offers.map((item) => (
           <OfferCard
             key={item.id}
-            id={item.id}
-            previewImage={item.previewImage}
-            isFavorite={item.isFavorite}
-            isPremium={item.isPremium}
-            title={item.title}
-            type={item.type}
-            price={item.price}
-            rating={item.rating}
+            offer={item}
             onOfferCardMouseOver={onOfferCardMouseOver}
             onOfferCardLeave={onOfferCardLeave}
           />
