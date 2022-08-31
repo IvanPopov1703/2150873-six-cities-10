@@ -2,7 +2,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatchType, StateType} from '../types/state';
 import {AxiosInstance} from 'axios';
 import {
-  changeFavoriteStatus,
+  changeFavoriteStatus, cleanFavoriteOnLogout,
   loadActiveOffer, loadFavorites,
   loadNeighbourhood,
   loadOffers,
@@ -45,6 +45,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
       const {data} = await api.get(APIRoute.Login);
       dispatch(setUser(data));
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(fetchFavoritesAction());
     } catch {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
@@ -62,6 +63,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dropToken();
     dispatch(setUser(null));
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    dispatch(cleanFavoriteOnLogout());
   },
 );
 
@@ -140,7 +142,7 @@ export const fetchFavoritesAction = createAsyncThunk<void, undefined, {
   state: StateType,
   extra: AxiosInstance
 }>(
-  'data/fetchReviews',
+  'data/fetchFavorites',
   async (_arg, {dispatch, extra: api}) => {
     const {data} = await api.get<OffersType>(APIRoute.Favorites);
     dispatch(setFavoriteLoadingStatus(true));
@@ -154,7 +156,7 @@ export const changeFavoriteStatusAction = createAsyncThunk<void, FavoriteDataTyp
   state: StateType,
   extra: AxiosInstance
 }>(
-  'data/postReview',
+  'data/changeFavoriteStatus',
   async ({id, status}, {dispatch, extra: api}) => {
     const {data} = await api.post<OfferType>(`${APIRoute.Favorites}/${id}/${status}`);
     dispatch(changeFavoriteStatus(data));

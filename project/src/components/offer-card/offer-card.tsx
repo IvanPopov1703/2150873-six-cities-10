@@ -1,6 +1,7 @@
 import {AppRoute} from '../../const';
 import {generatePath, Link} from 'react-router-dom';
 import {OfferType} from '../../types/offers';
+import BtnFavorite from '../btn-favorite/btn-favorite';
 
 type OfferCardProps = {
   offer: OfferType,
@@ -35,16 +36,7 @@ function OfferCard({offer, onOfferCardMouseOver, onOfferCardLeave}: OfferCardPro
             <b className="place-card__price-value">{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button
-            className={isFavorite
-              ? 'place-card__bookmark-button button place-card__bookmark-button--active'
-              : 'place-card__bookmark-button button'} type="button"
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
+          <BtnFavorite isFavorite={isFavorite} offerId={id} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
