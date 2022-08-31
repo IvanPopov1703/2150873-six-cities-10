@@ -33,3 +33,5 @@ export const setFavoriteLoadingStatus = createAction<boolean>('setFavoriteLoadin
 export const redirectToRoute = createAction<AppRoute>('redirectToRoute');
 
 export const changeFavoriteStatus = createAction<OfferType>('changeFavoriteStatus');
+
+export const cleanFavoriteOnLogout = createAction('cleanFavoriteOnLogout');

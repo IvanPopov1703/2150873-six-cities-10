@@ -1,7 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {
   changeActiveCity,
-  changeActiveSortType, changeFavoriteStatus, loadActiveOffer, loadFavorites, loadNeighbourhood,
+  changeActiveSortType, changeFavoriteStatus, cleanFavoriteOnLogout, loadActiveOffer, loadFavorites, loadNeighbourhood,
   loadOffers, loadReviews,
   requireAuthorization,
   setDataLoadingStatus, setFavoriteLoadingStatus, setOfferLoadingStatus,
@@ -93,5 +93,8 @@ export const reducer = createReducer(initialState, (builder) => {
       } else {
         state.favorites = state.favorites.filter((item) => item.id !== idChangedFavorite);
       }
+    })
+    .addCase(cleanFavoriteOnLogout, (state) => {
+      state.favorites = [];
     });
 });
