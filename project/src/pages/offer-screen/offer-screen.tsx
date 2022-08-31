@@ -1,25 +1,48 @@
 import Header from '../../components/header/Header';
 import {useParams} from 'react-router-dom';
-import {OffersType} from '../../types/offers';
-import {ReviewsType} from '../../types/reviews';
 import PropertyImage from '../../components/property-image/property-image';
-import PropertyInsideItem from '../../components/property-inside-item/property-inside-item';
-import ReviewsItem from '../../components/reviews-item/reviews-item';
 import CommentSubmissionForm from '../../components/comment-submission-form/comment-submission-form';
 import OfferList from '../../components/offer-list/offer-list';
 import Map from '../../components/map/map';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {useEffect} from 'react';
+import {fetchActiveOfferAction, fetchNeighbourhoodAction, fetchReviewsAction} from '../../store/api-actions';
+import LoadingScreen from '../../components/loading-screen/loading-screen';
+import {AuthorizationStatus, NUMBER_OF_IMAGES, NUMBER_OF_NEIGHBOURHOOD, NUMBER_OF_REVIEWS} from '../../const';
+import {ReviewsType} from '../../types/reviews';
+import Review from '../../components/review/review';
+import PropertyInsideItem from '../../components/property-inside-item/property-inside-item';
 
-type OfferScreenProps = {
-  offers: OffersType,
-  reviews: ReviewsType
-}
+const prepareReviews = (reviews: ReviewsType) => {
+  if (reviews.length <= 1) {
+    return reviews;
+  }
+  return [...reviews]
+    .sort((reviewA, reviewB) => Date.parse(reviewB.date) - Date.parse(reviewA.date))
+    .slice(0, NUMBER_OF_REVIEWS);
+};
 
-function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
+function OfferScreen(): JSX.Element {
 
   const params = useParams();
   const currentOfferId = Number(params.id);
-  const currentOffer = offers.filter((item: { id: number; }) => item.id === currentOfferId)[0];
-  const otherOffers = offers.filter((item: { id: number; }) => item.id !== currentOfferId);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchActiveOfferAction(currentOfferId));
+    dispatch(fetchNeighbourhoodAction(currentOfferId));
+    dispatch(fetchReviewsAction(currentOfferId));
+  }, [currentOfferId, dispatch]);
+
+  const isAuth = useAppSelector((state) => state.authorizationStatus) === AuthorizationStatus.Auth;
+  const isOfferLoading = useAppSelector((state) => state.isOfferLoading);
+  const currentOffer = useAppSelector((state) => state.activeOffer);
+  const reviews = useAppSelector((state) => state.reviews);
+  const neighbourhood = useAppSelector((state) => state.neighbourhood).slice(0, NUMBER_OF_NEIGHBOURHOOD);
+
+  if (isOfferLoading || null === currentOffer) {
+    return (<LoadingScreen />);
+  }
 
   return (
     <div>
@@ -47,7 +70,7 @@ function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
           <section className="property">
             <div className="property__gallery-container container">
               <div className="property__gallery">
-                {currentOffer.images.map((item) => <PropertyImage key={item} imagePath={item} />)}
+                {currentOffer.images.slice(0, NUMBER_OF_IMAGES).map((item) => <PropertyImage key={item} imagePath={item} />)}
               </div>
             </div>
             <div className="property__container container">
@@ -129,19 +152,19 @@ function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
                     <span className="reviews__amount">{reviews.length}</span>
                   </h2>
                   <ul className="reviews__list">
-                    {reviews.map((item) => <ReviewsItem key={item.id} review={item} />)}
+                    {prepareReviews(reviews).map((review) => <Review review={review} key={review.id}/>)}
                   </ul>
-                  <CommentSubmissionForm />
+                  {isAuth && <CommentSubmissionForm offerId={currentOfferId} />}
                 </section>
               </div>
             </div>
-            <Map city={currentOffer.city} pointsCity={offers} selectedOfferCardId={currentOfferId} />
+            <Map city={currentOffer.city} pointsCity={neighbourhood} selectedOfferCardId={currentOfferId} />
           </section>
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
-                <OfferList offers={otherOffers} />
+                <OfferList offers={neighbourhood} />
               </div>
             </section>
           </div>
