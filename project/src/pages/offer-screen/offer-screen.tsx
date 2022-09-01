@@ -1,4 +1,4 @@
-import Header from '../../components/header/Header';
+import Header from '../../components/header/header';
 import {useParams} from 'react-router-dom';
 import PropertyImage from '../../components/property-image/property-image';
 import CommentSubmissionForm from '../../components/comment-submission-form/comment-submission-form';
@@ -13,6 +13,8 @@ import {ReviewsType} from '../../types/reviews';
 import Review from '../../components/review/review';
 import PropertyInsideItem from '../../components/property-inside-item/property-inside-item';
 import BtnFavorite from '../../components/btn-favorite/btn-favorite';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import {getActiveOffer, getIsOfferLoading, getNeighbourhood, getReviews} from '../../store/data-process/selectors';
 
 const prepareReviews = (reviews: ReviewsType) => {
   if (reviews.length <= 1) {
@@ -35,11 +37,11 @@ function OfferScreen(): JSX.Element {
     dispatch(fetchReviewsAction(currentOfferId));
   }, [currentOfferId, dispatch]);
 
-  const isAuth = useAppSelector((state) => state.authorizationStatus) === AuthorizationStatus.Auth;
-  const isOfferLoading = useAppSelector((state) => state.isOfferLoading);
-  const currentOffer = useAppSelector((state) => state.activeOffer);
-  const reviews = useAppSelector((state) => state.reviews);
-  const neighbourhood = useAppSelector((state) => state.neighbourhood).slice(0, NUMBER_OF_NEIGHBOURHOOD);
+  const isAuth = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
+  const isOfferLoading = useAppSelector(getIsOfferLoading);
+  const currentOffer = useAppSelector(getActiveOffer);
+  const reviews = useAppSelector(getReviews);
+  const neighbourhood = useAppSelector(getNeighbourhood).slice(0, NUMBER_OF_NEIGHBOURHOOD);
 
   if (isOfferLoading || null === currentOffer) {
     return (<LoadingScreen />);

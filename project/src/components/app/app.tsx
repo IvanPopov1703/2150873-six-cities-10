@@ -7,12 +7,13 @@ import PrivateRoute from '../../hocs/private-route/private-route';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import NotFoundScreen from '../../pages/page-not-found/not-found-screen';
 import {useAppSelector} from '../../hooks';
-import HistoryRouter from '../history-route/history-route';
+import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
 function App(): JSX.Element {
 
-  const {authorizationStatus} = useAppSelector((state) => state);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <HistoryRouter history={browserHistory}>
