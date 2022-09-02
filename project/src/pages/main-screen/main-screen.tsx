@@ -1,4 +1,4 @@
-import Header from '../../components/header/Header';
+import Header from '../../components/header/header';
 import OfferList from '../../components/offer-list/offer-list';
 import {useState} from 'react';
 import Map from '../../components/map/map';
@@ -6,8 +6,10 @@ import {useAppSelector} from '../../hooks';
 import TabsList from '../../components/tabs-list/tabs-list';
 import MainNotFoundOffers from '../../components/main-not-found-offers/main-not-found-offers';
 import SortOptionsForm from '../../components/sort-options-form/sort-options-form';
-import SortByOption from '../../utils/sort-by-option';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
+import {sortByOption} from '../../utils/sort-by-option';
+import {getActiveCity, getActiveSortType} from '../../store/app-process/selectors';
+import {getIsOfferLoading, getOffers} from '../../store/data-process/selectors';
 
 function MainScreen(): JSX.Element {
 
@@ -16,13 +18,13 @@ function MainScreen(): JSX.Element {
   const handleOfferCardMouseOver = (id: number) => setActiveOfferCardId(id);
   const handleOfferCardLeave = () => setActiveOfferCardId(null);
 
-  const activeCity = useAppSelector((state) => state.activeCity);
-  const activeSortType = useAppSelector((state) => state.activeSortOption);
-  const allOffers = useAppSelector((state) => state.offers);
+  const activeCity = useAppSelector(getActiveCity);
+  const activeSortType = useAppSelector(getActiveSortType);
+  const allOffers = useAppSelector(getOffers);
   const filterOffers = allOffers.filter((item) => item.city.name === activeCity);
-  const offers = SortByOption([...filterOffers], activeSortType);
+  const offers = sortByOption([...filterOffers], activeSortType);
   const numberOfOffersFound = filterOffers.length;
-  const offerLoadingStatus = useAppSelector((state) => state.isOfferLoading);
+  const offerLoadingStatus = useAppSelector(getIsOfferLoading);
 
   if (offerLoadingStatus) {
     return (<LoadingScreen />);

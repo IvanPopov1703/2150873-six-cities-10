@@ -4,9 +4,10 @@ import {useAppDispatch, useAppSelector} from '../../hooks';
 import UserInfo from '../user-info/user-info';
 import React from 'react';
 import {logoutAction} from '../../store/api-actions';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
 function Header(): JSX.Element {
-  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthorizationStatus.Auth);
+  const isAuth = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
   const dispatch = useAppDispatch();
 
   const logout = (evt: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

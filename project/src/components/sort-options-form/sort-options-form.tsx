@@ -3,12 +3,13 @@ import {useAppDispatch, useAppSelector} from '../../hooks';
 import cn from 'classnames';
 import {SortOption} from '../../const';
 import OptionItem from '../option-item/option-item';
-import {changeActiveSortType} from '../../store/action';
+import {getActiveSortType} from '../../store/app-process/selectors';
+import {changeActiveSortType} from '../../store/app-process/app-process';
 
 function SortOptionsForm(): JSX.Element {
 
   const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const activeSortType = useAppSelector((state) => state.activeSortOption);
+  const activeSortType = useAppSelector(getActiveSortType);
   const dispatch = useAppDispatch();
 
   const handleSelectOptionClick = () => setIsSelectOpen(!isSelectOpen);
