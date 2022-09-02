@@ -1,7 +1,7 @@
 import {OffersType} from '../types/offers';
 import {SortOption} from '../const';
 
-const SortByOption = (offers: OffersType, activeSortType: string) => {
+export const sortByOption = (offers: OffersType, activeSortType: string) => {
   switch (activeSortType) {
     case SortOption.Popular:
       return offers;
@@ -15,5 +15,3 @@ const SortByOption = (offers: OffersType, activeSortType: string) => {
       return offers;
   }
 };
-
-export default SortByOption;

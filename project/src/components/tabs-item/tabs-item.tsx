@@ -1,6 +1,7 @@
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import cn from 'classnames';
-import {changeActiveCity} from '../../store/action';
+import {getActiveCity} from '../../store/app-process/selectors';
+import {changeActiveCity} from '../../store/app-process/app-process';
 
 type TabsItemProps = {
   itemName: string
@@ -8,7 +9,7 @@ type TabsItemProps = {
 
 function TabsItem({itemName}: TabsItemProps): JSX.Element {
 
-  const activeCity = useAppSelector((state) => state.activeCity);
+  const activeCity = useAppSelector(getActiveCity);
   const dispatch = useAppDispatch();
 
   const activeClassStyle = cn('locations__item-link tabs__item', {

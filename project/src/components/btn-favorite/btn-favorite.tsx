@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import cn from 'classnames';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {changeFavoriteStatusAction} from '../../store/api-actions';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
 type BtnFavoriteProps = {
   isFavorite: boolean;
@@ -12,7 +13,7 @@ type BtnFavoriteProps = {
 
 function BtnFavorite({isFavorite, offerId, isBig}: BtnFavoriteProps): JSX.Element {
 
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const authStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

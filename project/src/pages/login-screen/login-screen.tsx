@@ -1,13 +1,14 @@
 import {Link, Navigate} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus, CITIES} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {changeActiveCity} from '../../store/action';
 import FormLogin from '../../components/form-login/form-login';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import {changeActiveCity} from '../../store/app-process/app-process';
 
 function LoginScreen(): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const {authorizationStatus} = useAppSelector((state) => state);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const activeCity = CITIES[0];
 
   if (authorizationStatus === AuthorizationStatus.Auth) {

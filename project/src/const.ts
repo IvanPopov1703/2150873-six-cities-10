@@ -28,6 +28,12 @@ export enum SortOption {
   TopRatedFirst = 'Top rated first',
 }
 
+export enum NameSpace {
+  App = 'APP',
+  Data = 'DATA',
+  User = 'USER',
+}
+
 export const RATING_VALUES = [5, 4, 3, 2, 1];
 export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 export const NUMBER_OF_REVIEWS = 10;

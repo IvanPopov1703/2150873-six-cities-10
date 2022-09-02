@@ -1,4 +1,4 @@
-import Header from '../../components/header/Header';
+import Header from '../../components/header/header';
 import {Fragment} from 'react';
 import FavoriteOffer from '../../components/favorite-offer/favorite-offer';
 import {useAppSelector} from '../../hooks';
@@ -6,6 +6,7 @@ import Footer from '../../components/footer/footer';
 import FavoritesEmpty from '../../components/favorites-empty/favorites-empty';
 import cn from 'classnames';
 import {OffersType} from '../../types/offers';
+import {getFavorites} from '../../store/data-process/selectors';
 
 type OffersIndexType = {
   [key: string]: OffersType,
@@ -24,7 +25,7 @@ const indexOffersByCities = (offers: OffersType): OffersIndexType => (
 
 function FavoritesScreen(): JSX.Element {
 
-  const favorites = useAppSelector((state) => state.favorites);
+  const favorites = useAppSelector(getFavorites);
   const isEmpty = favorites.length === 0;
   const indexedOffers = indexOffersByCities(favorites);
 

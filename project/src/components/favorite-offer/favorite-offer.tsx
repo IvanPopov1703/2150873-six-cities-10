@@ -2,8 +2,8 @@ import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import {OffersType} from '../../types/offers';
 import {useAppDispatch} from '../../hooks';
-import {changeActiveCity} from '../../store/action';
 import OfferCard from '../offer-card/offer-card';
+import {changeActiveCity} from '../../store/app-process/app-process';
 
 type FavoriteOfferProps = {
   cityName: string,
