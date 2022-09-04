@@ -173,7 +173,7 @@ function OfferScreen(): JSX.Element {
                 </section>
               </div>
             </div>
-            <Map city={city} pointsCity={neighbourhood} selectedOfferCardId={currentOfferId} />
+            <Map city={city} pointsCity={[currentOffer, ...neighbourhood]} selectedOfferCardId={currentOfferId} />
           </section>
           <div className="container">
             <section className="near-places places">
